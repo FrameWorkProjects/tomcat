@@ -16,15 +16,6 @@
  */
 package org.apache.catalina.core;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.Globals;
 import org.apache.catalina.Wrapper;
@@ -38,6 +29,14 @@ import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.util.ExceptionUtils;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 import org.apache.tomcat.util.res.StringManager;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Valve that implements the default basic behavior for the
@@ -106,7 +105,7 @@ final class StandardHostValve extends ValveBase {
     @Override
     public final void invoke(Request request, Response response)
         throws IOException, ServletException {
-
+        // Host流程处理结束后，开始执行基础的StandardHostValve
         // Select the Context to be used for this Request
         Context context = request.getContext();
         if (context == null) {
@@ -136,6 +135,7 @@ final class StandardHostValve extends ValveBase {
             // application for processing.
             try {
                 if (!response.isErrorReportRequired()) {
+                    // 在StandardHostValve中调用Context的Pipeline进行处理
                     context.getPipeline().getFirst().invoke(request, response);
                 }
             } catch (Throwable t) {

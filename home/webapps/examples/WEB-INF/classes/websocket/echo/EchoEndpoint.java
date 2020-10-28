@@ -16,7 +16,6 @@
  */
 package websocket.echo;
 
-import javax.websocket.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 

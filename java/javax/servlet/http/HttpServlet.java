@@ -16,6 +16,7 @@
  */
 package javax.servlet.http;
 
+import javax.servlet.*;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -25,13 +26,6 @@ import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.ResourceBundle;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 
 
 /**
@@ -617,7 +611,7 @@ public abstract class HttpServlet extends GenericServlet {
         throws ServletException, IOException {
 
         String method = req.getMethod();
-
+        // 根据不同的请求方法执行对应的方法
         if (method.equals(METHOD_GET)) {
             long lastModified = getLastModified(req);
             if (lastModified == -1) {
@@ -637,6 +631,7 @@ public abstract class HttpServlet extends GenericServlet {
                     // Round down to the nearest second for a proper compare
                     // A ifModifiedSince of -1 will always be less
                     maybeSetLastModified(resp, lastModified);
+                    // 调用GET处理方法
                     doGet(req, resp);
                 } else {
                     resp.setStatus(HttpServletResponse.SC_NOT_MODIFIED);

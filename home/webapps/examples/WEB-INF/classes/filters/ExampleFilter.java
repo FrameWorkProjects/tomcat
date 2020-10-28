@@ -18,7 +18,7 @@
 package filters;
 
 
-import javax.servlet.*;
+import javax.servlet.ServletException;
 import java.io.IOException;
 
 
