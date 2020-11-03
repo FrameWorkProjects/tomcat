@@ -17,22 +17,6 @@
 
 package org.apache.jasper.servlet;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.SingleThreadModel;
-import javax.servlet.UnavailableException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.tagext.TagInfo;
-
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
 import org.apache.jasper.Options;
@@ -48,6 +32,15 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.InstanceManager;
 import org.apache.tomcat.Jar;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.tagext.TagInfo;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The JSP engine (a.k.a Jasper).
@@ -393,6 +386,7 @@ public class JspServletWrapper {
              * (1) Compile
              */
             if (options.getDevelopment() || mustCompile) {
+                // 如果是开发环境或者未编译文件，则调用JspCompilationContext的compile()方法进行编译
                 synchronized (this) {
                     if (options.getDevelopment() || mustCompile) {
                         // The following sets reload to true, if necessary
@@ -410,6 +404,7 @@ public class JspServletWrapper {
             /*
              * (2) (Re)load servlet class file
              */
+            // 获取servlet对象
             servlet = getServlet();
 
             // If a page is to be precompiled only, return.
@@ -473,6 +468,7 @@ public class JspServletWrapper {
                    servlet.service(request, response);
                 }
             } else {
+                // 执行servlet中的service()方法处理请求
                 servlet.service(request, response);
             }
         } catch (UnavailableException ex) {

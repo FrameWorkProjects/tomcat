@@ -17,18 +17,6 @@
 
 package org.apache.jasper.compiler;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.JarURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.apache.jasper.JasperException;
 import org.apache.jasper.JspCompilationContext;
 import org.apache.jasper.Options;
@@ -37,6 +25,13 @@ import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.apache.tomcat.Jar;
 import org.apache.tomcat.util.scan.JarFactory;
+
+import java.io.*;
+import java.net.JarURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Main JSP compiler class. This class uses Ant for compiling.
@@ -175,6 +170,7 @@ public abstract class Compiler {
         }
 
         ctxt.checkOutputDir();
+        // 获取生成的Java文件名称
         String javaFileName = ctxt.getServletJavaFileName();
 
         try {
@@ -280,6 +276,7 @@ public abstract class Compiler {
 
         // JSR45 Support
         if (!options.isSmapSuppressed()) {
+            //
             smapStr = SmapUtil.generateSmap(ctxt, pageNodes);
         }
 
@@ -372,12 +369,14 @@ public abstract class Compiler {
 
         try {
             final Long jspLastModified = ctxt.getLastModified(ctxt.getJspFile());
+            // 根据编译的.jsp文件生成java文件
             String[] smap = generateJava();
             File javaFile = new File(ctxt.getServletJavaFileName());
             if (!javaFile.setLastModified(jspLastModified.longValue())) {
                 throw new JasperException(Localizer.getMessage("jsp.error.setLastModified", javaFile));
             }
             if (compileClass) {
+                // 根据编译的.jsp文件生成class文件
                 generateClass(smap);
                 // Fix for bugzilla 41606
                 // Set JspServletWrapper.servletClassLastModifiedTime after successful compile
