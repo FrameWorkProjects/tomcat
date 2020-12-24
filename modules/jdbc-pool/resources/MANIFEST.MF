@@ -20,4 +20,7 @@ Import-Package:
   javax.naming.spi;version="0",
   javax.sql;version="0",
   org.apache.juli.logging;version="0",
- org.xml.sax
+ org.xml.sax,
+ sun.rmi.registry,
+ javax.rmi.ssl,
+ javax.net.ssl
