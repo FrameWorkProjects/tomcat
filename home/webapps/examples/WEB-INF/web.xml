@@ -396,4 +396,6 @@
         <listener-class>websocket.drawboard.DrawboardContextListener</listener-class>
     </listener>
 
+    <distributable/>
+
 </web-app>
